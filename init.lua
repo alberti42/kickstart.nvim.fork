@@ -242,6 +242,12 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 
+-- Provide the path to python:
+vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/py313/bin/python3")
+-- OR completely disable the provider:
+-- vim.g.loaded_python3_provider = 0
+-- then your usual lazy bootstrap + setup
+
 ---@type vim.Option
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
