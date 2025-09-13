@@ -231,7 +231,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 
 -- Provide the path to python:
-vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/py313/bin/python3")
+vim.g.python3_host_prog = vim.fn.expand '~/.pyenv/versions/py313/bin/python3'
 -- OR completely disable the provider:
 -- vim.g.loaded_python3_provider = 0
 -- then your usual lazy bootstrap + setup
@@ -973,109 +973,110 @@ require('lazy').setup({
   { -- Install catppuccin for neovim
     'catppuccin/nvim',
     name = 'catppuccin',
-    priority = 1001,  -- make sure catppuccin loads before auto-dark-mode
+    priority = 1001, -- make sure catppuccin loads before auto-dark-mode
     config = function()
-      require("catppuccin").setup({
-			    flavour = "auto", -- latte, frappe, macchiato, mocha
-			    background = { -- :h background
-			        light = "frappe",
-			        dark = "macchiato",
-			    },
-			    transparent_background = false, -- disables setting the background color.
-			    float = {
-			        transparent = false, -- enable transparent floating windows
-			        solid = false, -- use solid styling for floating windows, see |winborder|
-			    },
-			    show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
-			    term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
-			    dim_inactive = {
-			        enabled = false, -- dims the background color of inactive window
-			        shade = "dark",
-			        percentage = 0.15, -- percentage of the shade to apply to the inactive window
-			    },
-			    no_italic = false, -- Force no italic
-			    no_bold = false, -- Force no bold
-			    no_underline = false, -- Force no underline
-			    styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-			        comments = { "italic" }, -- Change the style of comments
-			        conditionals = { "italic" },
-			        loops = {},
-			        functions = {},
-			        keywords = {},
-			        strings = {},
-			        variables = {},
-			        numbers = {},
-			        booleans = {},
-			        properties = {},
-			        types = {},
-			        operators = {},
-			        -- miscs = {}, -- Uncomment to turn off hard-coded styles
-			    },
-			    color_overrides = {},
-			    custom_highlights = {},
-			    default_integrations = true,
-			    auto_integrations = false,
-			    integrations = {
-			        cmp = true,
-			        gitsigns = true,
-			        nvimtree = true,
-			        treesitter = true,
-			        notify = false,
-			        mini = {
-			            enabled = true,
-			            indentscope_color = "",
-			        },
-			        -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
-			    },
-			})
+      require('catppuccin').setup {
+        flavour = 'auto', -- latte, frappe, macchiato, mocha
+        background = { -- :h background
+          light = 'frappe',
+          dark = 'macchiato',
+        },
+        transparent_background = false, -- disables setting the background color.
+        float = {
+          transparent = false, -- enable transparent floating windows
+          solid = false, -- use solid styling for floating windows, see |winborder|
+        },
+        show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
+        term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
+        dim_inactive = {
+          enabled = false, -- dims the background color of inactive window
+          shade = 'dark',
+          percentage = 0.15, -- percentage of the shade to apply to the inactive window
+        },
+        no_italic = false, -- Force no italic
+        no_bold = false, -- Force no bold
+        no_underline = false, -- Force no underline
+        styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+          comments = { 'italic' }, -- Change the style of comments
+          conditionals = { 'italic' },
+          loops = {},
+          functions = {},
+          keywords = {},
+          strings = {},
+          variables = {},
+          numbers = {},
+          booleans = {},
+          properties = {},
+          types = {},
+          operators = {},
+          -- miscs = {}, -- Uncomment to turn off hard-coded styles
+        },
+        color_overrides = {},
+        custom_highlights = {},
+        default_integrations = true,
+        auto_integrations = false,
+        integrations = {
+          cmp = true,
+          gitsigns = true,
+          nvimtree = true,
+          treesitter = true,
+          notify = false,
+          mini = {
+            enabled = true,
+            indentscope_color = '',
+          },
+          -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+        },
+      }
 
-	    -- Run your zsh function and capture output
-	    -- local handle = io.popen("defaults read -g AppleInterfaceStyle 2>/dev/null")
-	    -- local result = handle:read("*l")
-	    -- handle:close()
+      -- Run your zsh function and capture output
+      -- local handle = io.popen("defaults read -g AppleInterfaceStyle 2>/dev/null")
+      -- local result = handle:read("*l")
+      -- handle:close()
 
-	    -- -- Pick the right colorscheme
-	    -- if result == "Dark" then
-	    --   vim.cmd.colorscheme("catppuccin-macchiato")
-	    -- else
-	    --   vim.cmd.colorscheme("catppuccin-frappe")
-	    -- end
+      -- -- Pick the right colorscheme
+      -- if result == "Dark" then
+      --   vim.cmd.colorscheme("catppuccin-macchiato")
+      -- else
+      --   vim.cmd.colorscheme("catppuccin-frappe")
+      -- end
 
-			-- Whatever scheme we set here, it is overwritten by auto-dark-mode
-			-- vim.cmd.colorscheme "catppuccin-macchiato"
+      -- Whatever scheme we set here, it is overwritten by auto-dark-mode
+      -- vim.cmd.colorscheme "catppuccin-macchiato"
     end,
   },
 
-  -- Auto-dark-mode plugin (see https://github.com/f-person/auto-dark-mode.nvim)	
-	{
-	  "alberti42/fork-auto-dark-mode.nvim",
-	  name = "auto-dark-mode",
-	  priority = 1000, -- make sure catppuccin loads before auto-dark-mode
-	  -- Load only when a desktop/GUI is available.
-		-- Works on Linux/Wayland/X11 and on macOS local terminals (no DISPLAY),
-		-- but *skips* raw SSH TTY sessions unless a display is forwarded.
-		config = function()
-	    local plugin = require("auto-dark-mode")
+  -- Auto-dark-mode plugin (see https://github.com/f-person/auto-dark-mode.nvim)
+  {
+    'alberti42/fork-auto-dark-mode.nvim',
+    branch = 'merged',
+    name = 'auto-dark-mode',
+    priority = 1000, -- make sure catppuccin loads before auto-dark-mode
+    -- Load only when a desktop/GUI is available.
+    -- Works on Linux/Wayland/X11 and on macOS local terminals (no DISPLAY),
+    -- but *skips* raw SSH TTY sessions unless a display is forwarded.
+    config = function()
+      local plugin = require 'auto-dark-mode'
 
-	    plugin.setup({
-	      fallback = "dark",
-	      update_interval = 3000,
-	      sync_start = true,
+      plugin.setup {
+        fallback = 'dark',
+        update_interval = 3000,
+        sync_start = true,
 
-	      set_dark_mode = function()
-	        vim.g.current_appearance = "dark"
-	        -- vim.notify("[auto-dark-mode] detected: dark", vim.log.levels.INFO)
-	        vim.cmd.colorscheme("catppuccin-macchiato")
-	      end,
+        set_dark_mode = function()
+          vim.g.current_appearance = 'dark'
+          -- vim.notify("[auto-dark-mode] detected: dark", vim.log.levels.INFO)
+          vim.cmd.colorscheme 'catppuccin-macchiato'
+        end,
 
-	      set_light_mode = function()
-	        vim.g.current_appearance = "light"
-	        -- vim.notify("[auto-dark-mode] detected: light", vim.log.levels.INFO)
-	        vim.cmd.colorscheme("catppuccin-frappe")
-	      end,
-	    })
-	  end,
-	},
+        set_light_mode = function()
+          vim.g.current_appearance = 'light'
+          -- vim.notify("[auto-dark-mode] detected: light", vim.log.levels.INFO)
+          vim.cmd.colorscheme 'catppuccin-frappe'
+        end,
+      }
+    end,
+  },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
