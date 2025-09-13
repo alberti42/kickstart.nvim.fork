@@ -219,6 +219,18 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Put this helper somewhere you can reuse it (top of your spec file)
+local function wants_auto_dark()
+  local has_gui = vim.g.neovide or vim.g.gonvim_running or (vim.fn.has("gui_running") == 1)
+  local has_display = (vim.env.DISPLAY and #vim.env.DISPLAY > 0)
+                   or (vim.env.WAYLAND_DISPLAY and #vim.env.WAYLAND_DISPLAY > 0)
+  local is_macos = (vim.loop.os_uname().sysname == "Darwin") or (vim.fn.has("mac") == 1)
+  local is_ssh = (vim.env.SSH_TTY and #vim.env.SSH_TTY > 0)
+              or (vim.env.SSH_CONNECTION and #vim.env.SSH_CONNECTION > 0)
+  -- Load on any GUI/display OR local macOS terminal (not SSH)
+  return has_gui or has_display or (is_macos and not is_ssh)
+end
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -1037,6 +1049,10 @@ require('lazy').setup({
 
 			-- Whatever scheme we set here, it is overwritten by auto-dark-mode
 			-- vim.cmd.colorscheme "catppuccin-macchiato"
+			 if not wants_auto_dark() then
+	      vim.g.current_appearance = "dark"
+	      vim.cmd.colorscheme "catppuccin-macchiato"
+	    end
     end,
   },
 
@@ -1045,6 +1061,10 @@ require('lazy').setup({
 	  "alberti42/fork-auto-dark-mode.nvim",
 	  name = "auto-dark-mode",
 	  priority = 1000, -- make sure catppuccin loads before auto-dark-mode
+	  -- Load only when a desktop/GUI is available.
+		-- Works on Linux/Wayland/X11 and on macOS local terminals (no DISPLAY),
+		-- but *skips* raw SSH TTY sessions unless a display is forwarded.
+		cond = wants_auto_dark,
 	  config = function()
 	    local plugin = require("auto-dark-mode")
 
@@ -1065,18 +1085,6 @@ require('lazy').setup({
 	        vim.cmd.colorscheme("catppuccin-frappe")
 	      end,
 	    })
-
-	    plugin.init()
-
-	    -- A function to query to current appearance
-	    --[[
-	    vim.api.nvim_create_user_command("AutoDarkModeDebug", function()
-	      local sys = plugin.state and plugin.state.system or "unknown"
-	      local cur = vim.g.current_appearance or "unknown (not set yet)"
-	      local qc  = (plugin.state and plugin.state.query_command) and table.concat(plugin.state.query_command, " ") or "(n/a)"
-	      print(("auto-dark-mode\n  system: %s\n  current: %s\n  query: %s"):format(sys, cur, qc))
-	    end, {})
-	    --]]
 	  end,
 	},
 
